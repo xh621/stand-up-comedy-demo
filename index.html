@@ -40,11 +40,7 @@ Speech synthesis (text to speech, TTS) and recognition (automatic speech recogni
 <a href="#2.2">2.2 杨笠</a><br>
 <a href="#2.3">2.3 杨波</a><br>
 <a href="#2.4">2.4 鸟鸟</a><br>
-<b><a href="#case-studies">案例分析（Case Study)——相同文本（包含个性填充物）在ComedicSpeech不同说话人下的多样风格</a></b><br>
-<a href="#2.1">2.1 呼兰</a><br>
-<a href="#2.2">2.2 杨笠</a><br>
-<a href="#2.3">2.3 杨波</a><br>
-<a href="#2.4">2.4 鸟鸟</a><br>
+<b><a href="#case-studies">案例分析（Case Study)</a></b><br>
 				
 <h2 id="our-model">Archietecture of ComedicSpeech</h3>
 <img src="images/ComedicSpeech/model.png" width="60%"/>
@@ -562,26 +558,31 @@ Speech synthesis (text to speech, TTS) and recognition (automatic speech recogni
 <p><span id="case-studies" name="case-studies"></span></p>
 <h2 id="audio-samples">案例分析（Case Study)——相同文本（包含个性填充物）在ComedicSpeech不同说话人下的多样风格</h2>
 <img src="images/ComedicSpeech/case_study.png" width="50%"/>			
-<p><em>带个性填充物(杨笠的"你知道吧")的文本: 我真正开始有一点自信以后，是我开始说脱口秀以后，我觉得我长得挺好的，你知道吧。</em></p>
+<p><em>使用带个性填充物(杨笠的"你知道吧")的文本: </em></p>
+				<p><em>我真正开始有一点自信以后，是我开始说脱口秀以后，我觉得我长得挺好的，你知道吧。</em></p>
 <table><thead>
 <tr>
 <th style="text-align: center">GT</th>
 <th style="text-align: center">Baseline (Spk Emb)—杨笠口吻</th>
+</tr></thead><tbody>
+<tr>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00040129/ground-truth.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00040129/baselin2-vanilla.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+</tr>
+</tbody></table>
+<table><thead>
+<tr>
 <th style="text-align: center">ComedicSpeech-呼兰口吻</th>
 <th style="text-align: center">ComedicSpeech-杨笠口吻</th>
 <th style="text-align: center">ComedicSpeech-杨波口吻</th>
 <th style="text-align: center">ComedicSpeech-鸟鸟口吻</th>
 </tr></thead><tbody>
 <tr>
-<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00040129/ground-truth.wav" autoplay/>Your browser does not support the audio element.</audio></td>
-<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00040129/baselin2-vanilla.wav" autoplay/>Your browser does not support the audio element.</audio></td>
 <td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/case_study/呼兰-SSA00040129.wav" autoplay/>Your browser does not support the audio element.</audio></td>
 <td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/case_study/杨笠-SSA00040129.wav" autoplay/>Your browser does not support the audio element.</audio></td>
 <td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/case_study/杨波-SSA00040129.wav" autoplay/>Your browser does not support the audio element.</audio></td>
 <td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/case_study/鸟鸟-SSA00040129.wav" autoplay/>Your browser does not support the audio element.</audio></td>
-</tr>
-</tbody></table>
-
+</tr></tbody></table>
 			</section>
 		</article>
 	</main>
