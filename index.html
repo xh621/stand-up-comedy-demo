@@ -20,33 +20,44 @@
 
 	<header role="banner">
 	</header>
-
 	<main role="main">
 		<article itemscope itemtype="https://schema.org/BlogPosting">
             <h1 class="entry-title" itemprop="headline">ComedicSpeech: Text To Speech For Stand-up Comedies in Low-Resource Scenarios</h1>
 			
 			<section itemprop="entry-text">
-
+				<p>ArXiv: <a href="http://arxiv.org/abs/2305.12200">arXiv:2305.12200</a></p>
+<h2 id="authors">Authors</h2>
+<ul>
+<li>Yuyue Wang (Gaoling School of Artificial Intelligence, Renmin University of China) <a href="mailto:wangyuyue123@ruc.edu.cn">wangyuyue123@ruc.edu.cn</a></li>
+<li>Huan Xiao* (School of Statistics, Renmin University of China) <a href="mailto:xiaohuan001@ruc.edu.cn">xiaohuan001@ruc.edu.cn</a></li>
+<li>Yihan Wu (Gaoling School of Artificial Intelligence, Renmin University of China) <a href="mailto:yihanwu@ruc.edu.cn">yihanwu@ruc.edu.cn</a></li>
+<li>Ruihua Song# (Gaoling School of Artificial Intelligence, Renmin University of China) <a href="mailto:rsong@ruc.edu.cn">rsong@ruc.edu.cn</a></li>
+</ul>
+<p><small>* Equally contributed authors.</small></p>			
+<p><small># Corresponding authors.</small></p>
+	
 <!-- ## Abstract
-Speech synthesis (text to speech, TTS) and recognition (automatic speech recognition, ASR) are important speech tasks, and require a large amount of text and speech pairs for model training. However, there are more than 6,000 languages in the world and most languages are lack of speech training data, which poses significant challenges when building TTS and ASR systems for extremely low-resource languages. In this paper, we develop LRSpeech, a TTS and ASR system under the extremely low-resource setting, which can support rare languages with low data cost. LRSpeech consists of three key techniques: 1) pre-training on rich-resource languages and fine-tuning on low-resource languages; 2) dual transformation between TTS and ASR to iteratively boost the accuracy of each other; 3) knowledge distillation to customize the TTS model on a high-quality target-speaker voice and improve the ASR model on multiple voices. We conduct experiments on an experimental language (English) and a truly low-resource language (Lithuanian) to verify the effectiveness of LRSpeech. Experimental results show that LRSpeech 1) achieves high quality for TTS in terms of both intelligibility (more than $98\%$ intelligibility rate) and naturalness (above 3.5 mean opinion score (MOS)) of the synthesized speech, which satisfy the requirements for industrial deployment, 2) achieves promising recognition accuracy for ASR, and 3) last but not least, uses extremely low-resource training data. We also conduct comprehensive analyses on LRSpeech with different amounts of data resources, and provide valuable insights and guidances for industrial deployment. We are currently deploying LRSpeech into a commercialized cloud speech service to support TTS on more rare languages.  -->
+<p>
+Text to Speech (TTS) models can generate natural and high-quality speech, but it is not expressive enough when synthesizing speech with dramatic expressiveness, such as stand-up comedies. Considering comedians have diverse personal speech styles, including personal prosody, rhythm, and fillers, it requires real-world datasets and strong speech style modeling capabilities, which brings challenges. In this paper, we construct a new dataset and develop ComedicSpeech, a TTS system tailored for the stand-up comedy synthesis in low-resource scenarios. First, we extract prosody representation by the prosody encoder and condition it to the TTS model in a flexible way. Second, we enhance the personal rhythm modeling by a conditional duration predictor. Third, we model the personal fillers by introducing comedian-related special tokens. Experiments show that ComedicSpeech achieves better expressiveness than baselines with only ten-minute training data for each comedian.
+</p>
 <h2 id="abstract">Contents</h2>
-<b><a href="#audio-samples">ComedicSpeech的音频生成效果展示（Demo）</a></b><br>
-<a href="#1.1">1.1 呼兰(Comedian A)</a><br>
-<a href="#1.2">1.2 杨笠(Comedian B)</a><br>
-<a href="#1.3">1.3 杨波(Comedian C)</a><br>
-<a href="#1.4">1.4 鸟鸟(Comedian D)</a><br>
-<b><a href="#ablation-studies">消融实验（Ablation Studies）展示</a></b><br>
-<a href="#2.1">2.1 呼兰(Comedian A)</a><br>
-<a href="#2.2">2.2 杨笠(Comedian B)</a><br>
-<a href="#2.3">2.3 杨波(Comedian C)</a><br>
-<a href="#2.4">2.4 鸟鸟(Comedian D)</a><br>
-<b><a href="#case-studies">案例分析（Case Study)</a></b><br>
+<b><a href="#audio-samples">Baseline Comparison and Audio Samples Synthesized by ComedicSpeech of Four Comedians</a></b><br>
+<a href="#1.1">1.1 Lan Hu(Comedian A)</a><br>
+<a href="#1.2">1.2 Li Yang(Comedian B)</a><br>
+<a href="#1.3">1.3 Bo Yang(Comedian C)</a><br>
+<a href="#1.4">1.4 Niao Niao(Comedian D)</a><br>
+<b><a href="#ablation-studies"> Ablation Studies</a></b><br>
+<a href="#2.1">2.1 Lan Hu(Comedian A)</a><br>
+<a href="#2.2">2.2 Li Yang(Comedian B)</a><br>
+<a href="#2.3">2.3 Bo Yang(Comedian C)</a><br>
+<a href="#2.4">2.4 Niao Niao(Comedian D)</a><br>
+<b><a href="#case-studies">Case Study</a></b><br>
 				
 <h2 id="our-model">Archietecture of ComedicSpeech</h3>
-<img src="images/ComedicSpeech/model.png" width="60%"/>
+<img src="images/ComedicSpeech/image.png" width="100%"/>
 				
 <p><span id="audio-samples" name="audio-samples"></span></p>
-<h2 id="audio-samples">ComedicSpeech的音频生成效果展示</h2>
+<h2 id="audio-samples">Baseline Comparison and Audio Samples Synthesized by ComedicSpeech of Four Comedians</h2>
 <img src="images/ComedicSpeech/table1.png" width="50%"/>
 <p><span id="1.1" name="1.1"></span></p>
 <h3 id="1.1">1.1 呼兰</h3>
@@ -556,7 +567,7 @@ Speech synthesis (text to speech, TTS) and recognition (automatic speech recogni
 </tbody></table>
 				
 <p><span id="case-studies" name="case-studies"></span></p>
-<h2 id="audio-samples">案例分析（Case Study)——相同文本（包含个性填充物）在ComedicSpeech不同说话人下的多样风格</h2>
+<h2 id="audio-samples">Case Study——The diversity of styles in ComedicSpeech to the same text (contain personal filler)</h2>
 <img src="images/ComedicSpeech/case_study.png" width="50%"/>			
 <p><em>使用带个性填充物(杨笠的"你知道吧")的文本: </em></p>
 				<p><em>我真正开始有一点自信以后，是我开始说脱口秀以后，我觉得我长得挺好的，你知道吧。</em></p>
