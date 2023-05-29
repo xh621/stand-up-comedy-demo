@@ -1,0 +1,682 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="generator" content="Hugo 0.66.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
+<link rel="stylesheet" href="css/normalize.css">
+<link rel="stylesheet" href="css/skeleton.css">
+<link rel="stylesheet" href="css/custom.css">
+<link rel="alternate" href="index.xml" type="application/rss+xml" title="SpeechResearch">
+<link rel="shortcut icon" href="favicon.png" type="image/x-icon" />
+<title>ComedicSpeech: Text To Speech For Stand-up Comedies in Low-Resource Scenarios- SpeechResearch</title>
+</head>
+<body>
+
+<div class="container">
+
+	<header role="banner">
+	</header>
+	<main role="main">
+		<article itemscope itemtype="https://schema.org/BlogPosting">
+            <h1 class="entry-title" itemprop="headline">ComedicSpeech: Text To Speech For Stand-up Comedies in Low-Resource Scenarios</h1>
+			
+			<section itemprop="entry-text">
+				<p>ArXiv: <a href="http://arxiv.org/abs/2305.12200">arXiv:2305.12200</a></p>
+<h2 id="authors">Authors</h2>
+<ul>
+<li>Yuyue Wang (Gaoling School of Artificial Intelligence, Renmin University of China) <a href="mailto:wangyuyue123@ruc.edu.cn">wangyuyue123@ruc.edu.cn</a></li>
+<li>Huan Xiao* (School of Statistics, Renmin University of China) <a href="mailto:xiaohuan001@ruc.edu.cn">xiaohuan001@ruc.edu.cn</a></li>
+<li>Yihan Wu (Gaoling School of Artificial Intelligence, Renmin University of China) <a href="mailto:yihanwu@ruc.edu.cn">yihanwu@ruc.edu.cn</a></li>
+<li>Ruihua Song# (Gaoling School of Artificial Intelligence, Renmin University of China) <a href="mailto:rsong@ruc.edu.cn">rsong@ruc.edu.cn</a></li>
+</ul>
+<p><small>* Equally contributed authors.</small></p>			
+<p><small># Corresponding authors.</small></p>
+				
+<h2 id="abstract1">Abstract</h2>
+<p>Text to Speech (TTS) models can generate natural and high-quality speech, but it is not expressive enough when synthesizing speech with dramatic expressiveness, such as stand-up comedies. Considering comedians have diverse personal speech styles, including personal prosody, rhythm, and fillers, it requires real-world datasets and strong speech style modeling capabilities, which brings challenges. In this paper, we construct a new dataset and develop ComedicSpeech, a TTS system tailored for the stand-up comedy synthesis in low-resource scenarios. First, we extract prosody representation by the prosody encoder and condition it to the TTS model in a flexible way. Second, we enhance the personal rhythm modeling by a conditional duration predictor. Third, we model the personal fillers by introducing comedian-related special tokens. Experiments show that ComedicSpeech achieves better expressiveness than baselines with only ten-minute training data for each comedian.</p>
+
+<h2 id="abstract">Contents</h2>
+<b><a href="#audio-samples">Baseline Comparison and Audio Samples Synthesized by ComedicSpeech</a></b><br>
+<a href="#1.1">1.1 Lan Hu(Comedian A)</a><br>
+<a href="#1.2">1.2 Li Yang(Comedian B)</a><br>
+<a href="#1.3">1.3 Bo Yang(Comedian C)</a><br>
+<a href="#1.4">1.4 Niao Niao(Comedian D)</a><br>
+<b><a href="#ablation-studies"> Ablation Studies</a></b><br>
+<a href="#2.1">2.1 Lan Hu(Comedian A)</a><br>
+<a href="#2.2">2.2 Li Yang(Comedian B)</a><br>
+<a href="#2.3">2.3 Bo Yang(Comedian C)</a><br>
+<a href="#2.4">2.4 Niao Niao(Comedian D)</a><br>
+<b><a href="#case-studies">Case Study</a></b><br>
+				
+<h2 id="our-model">Archietecture of ComedicSpeech</h3>
+<img src="images/ComedicSpeech/image.png" width="80%"/>
+				
+<p><span id="audio-samples" name="audio-samples"></span></p>
+<h2 id="audio-samples">Baseline Comparison and Audio Samples Synthesized by ComedicSpeech</h2>
+<img src="images/ComedicSpeech/table1.png" width="50%"/>
+<p><span id="1.1" name="1.1"></span></p>
+<h3 id="1.1">1.1 呼兰</h3>
+<p><em>Demo1: 而且他这高考出问题，我看着都心慌，这字儿我都不认识，我也是高材生啊</em></p>
+<p><em>English translation:And he had a problem with the college entrance examination, I looked at the panic, this word I don't know, I am also a top student.</em></p>
+<table><thead>
+<tr>
+<th style="text-align: center">GT</th>
+<th style="text-align: center">GT mel + MelGAN</th>
+<th style="text-align: center">Baseline (Spk Emb)</th>
+<th style="text-align: center">Baseline (GST)</th>
+<th style="text-align: center">ComedicSpeech</th>
+</tr></thead><tbody>
+<tr>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00010027/ground-truth.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00010027/ground-truth+vocoder.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00010027/baselin2-vanilla.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00010027/baseline1-gst.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00010027/our_model.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+</tr>
+</tbody></table>
+<p><em>Demo2: 而且热搜上面是有标签的，就是那个什么营销号，就是那个一个井字儿对吧。</em></p>
+<p><em>English translation:And there's a hashtag on it, the marketing account, you know, a hash symbol.</em></p>
+<table><thead>
+<tr>
+<th style="text-align: center">GT</th>
+<th style="text-align: center">GT mel + MelGAN</th>
+<th style="text-align: center">Baseline (Spk Emb)</th>
+<th style="text-align: center">Baseline (GST)</th>
+<th style="text-align: center">ComedicSpeech</th>
+</tr></thead><tbody>
+<tr>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00010030/ground-truth.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00010030/ground-truth+vocoder.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00010030/baselin2-vanilla.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00010030/baseline1-gst.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00010030/our_model.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+</tr>
+</tbody></table>
+<p><em>Demo3: 还拉了个群，叫“抄底小队”，后来才知道，那是“自杀小队”。</em></p>
+<p><em>English translation:And formed a group called the "bottom Hunting Squad," which, as it turned out, was the "suicide Squad."</em></p>
+<table><thead>
+<tr>
+<th style="text-align: center">GT</th>
+<th style="text-align: center">GT mel + MelGAN</th>
+<th style="text-align: center">Baseline (Spk Emb)</th>
+<th style="text-align: center">Baseline (GST)</th>
+<th style="text-align: center">ComedicSpeech</th>
+</tr></thead><tbody>
+<tr>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00010047/ground-truth.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00010047/ground-truth+vocoder.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00010047/baselin2-vanilla.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00010047/baseline1-gst.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00010047/our_model.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+</tr>
+</tbody></table>
+<p><em>Demo4: 聊遗憾，我真的觉得遗憾挺好的，就相比你啥都留不下来，你至少还留下了遗憾嘛。</em></p>
+<p><em>English translation:Talking about regret, I really think regret is good, compared to you can not save anything, you at least left regret.</em></p>
+<table><thead>
+<tr>
+<th style="text-align: center">GT</th>
+<th style="text-align: center">GT mel + MelGAN</th>
+<th style="text-align: center">Baseline (Spk Emb)</th>
+<th style="text-align: center">Baseline (GST)</th>
+<th style="text-align: center">ComedicSpeech</th>
+</tr></thead><tbody>
+<tr>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00010109/ground-truth.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00010109/ground-truth+vocoder.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00010109/baselin2-vanilla.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00010109/baseline1-gst.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00010109/our_model.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+</tr>
+</tbody></table>
+				
+<p><span id="1.2" name="1.2"></span></p>
+<h3 id="1.2">1.2 杨笠</h3>
+<p><em>Demo1: 然后我就给那个男的打电话，我说首先是这样的，我非常敬重你的人品。</em></p>
+<p><em>English translation:And I called the guy, and I said, first of all, I have a lot of respect for your character.</em></p>
+<table><thead>
+<tr>
+<th style="text-align: center">GT</th>
+<th style="text-align: center">GT mel + MelGAN</th>
+<th style="text-align: center">Baseline (Spk Emb)</th>
+<th style="text-align: center">Baseline (GST)</th>
+<th style="text-align: center">ComedicSpeech</th>
+</tr></thead><tbody>
+<tr>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00040036/ground-truth.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00040036/ground-truth+vocoder.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00040036/baselin2-vanilla.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00040036/baseline1-gst.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00040036/our_model.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+</tr>
+</tbody></table>
+<p><em>Demo2: 不是的，这是一种偏见。我们家不重男轻女，在我们家是这样。</em></p>
+<p><em>English translation:No, it's a form of prejudice. We don't have a preference for boys, not in our family.</em></p>
+<table><thead>
+<tr>
+<th style="text-align: center">GT</th>
+<th style="text-align: center">GT mel + MelGAN</th>
+<th style="text-align: center">Baseline (Spk Emb)</th>
+<th style="text-align: center">Baseline (GST)</th>
+<th style="text-align: center">ComedicSpeech</th>
+</tr></thead><tbody>
+<tr>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00040095/ground-truth.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00040095/ground-truth+vocoder.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00040095/baselin2-vanilla.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00040095/baseline1-gst.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00040095/our_model.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+</tr>
+</tbody></table>
+<p><em>Demo3: 但是没有一个孩子，把同学领回家写作业写着写着说，是不是累了？啊？</em></p>
+<p><em>English translation:But there is no child, taking his classmates home to write homework and say, is it tired? </em></p>
+<table><thead>
+<tr>
+<th style="text-align: center">GT</th>
+<th style="text-align: center">GT mel + MelGAN</th>
+<th style="text-align: center">Baseline (Spk Emb)</th>
+<th style="text-align: center">Baseline (GST)</th>
+<th style="text-align: center">ComedicSpeech</th>
+</tr></thead><tbody>
+<tr>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00040113/ground-truth.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00040113/ground-truth+vocoder.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00040113/baselin2-vanilla.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00040113/baseline1-gst.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00040113/our_model.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+</tr>
+</tbody></table>
+<p><em>Demo4: 我真正开始有一点自信以后，是我开始说脱口秀以后，我觉得我长得挺好的，你知道吧。</em></p>
+<p><em>English translation:When I really started to feel a little more confident, when I started talking talk, I thought I looked good, you know.</em></p>
+<table><thead>
+<tr>
+<th style="text-align: center">GT</th>
+<th style="text-align: center">GT mel + MelGAN</th>
+<th style="text-align: center">Baseline (Spk Emb)</th>
+<th style="text-align: center">Baseline (GST)</th>
+<th style="text-align: center">ComedicSpeech</th>
+</tr></thead><tbody>
+<tr>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00040129/ground-truth.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00040129/ground-truth+vocoder.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00040129/baselin2-vanilla.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00040129/baseline1-gst.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00040129/our_model.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+</tr>
+</tbody></table>
+				
+<p><span id="1.3" name="1.3"></span></p>
+<h3 id="1.3">1.3 杨波</h3>
+<p><em>Demo1: 有一天我睡的正香，我女朋友把我叫醒。</em></p>
+<p><em>English translation:One day when I was fast asleep, my girlfriend woke me up.</em></p>
+<table><thead>
+<tr>
+<th style="text-align: center">GT</th>
+<th style="text-align: center">GT mel + MelGAN</th>
+<th style="text-align: center">Baseline (Spk Emb)</th>
+<th style="text-align: center">Baseline (GST)</th>
+<th style="text-align: center">ComedicSpeech</th>
+</tr></thead><tbody>
+<tr>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00050012/ground-truth.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00050012/ground-truth+vocoder.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00050012/baselin2-vanilla.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00050012/baseline1-gst.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00050012/our_model.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+</tr>
+</tbody></table>
+<p><em>Demo2: 后来，老板把我开了，可能他觉得，工作压力太大了。</em></p>
+<p><em>English translation:Later, my boss fired me, maybe he felt the pressure of work was too much.</em></p>
+<table><thead>
+<tr>
+<th style="text-align: center">GT</th>
+<th style="text-align: center">GT mel + MelGAN</th>
+<th style="text-align: center">Baseline (Spk Emb)</th>
+<th style="text-align: center">Baseline (GST)</th>
+<th style="text-align: center">ComedicSpeech</th>
+</tr></thead><tbody>
+<tr>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00050026/ground-truth.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00050026/ground-truth+vocoder.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00050026/baselin2-vanilla.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00050026/baseline1-gst.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00050026/our_model.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+</tr>
+</tbody></table>
+<p><em>Demo3: 看见了吗，你们加一起也斗不过我。</em></p>
+<p><em>English translation:See? You can't beat me together.</em></p>
+<table><thead>
+<tr>
+<th style="text-align: center">GT</th>
+<th style="text-align: center">GT mel + MelGAN</th>
+<th style="text-align: center">Baseline (Spk Emb)</th>
+<th style="text-align: center">Baseline (GST)</th>
+<th style="text-align: center">ComedicSpeech</th>
+</tr></thead><tbody>
+<tr>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00050051/ground-truth.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00050051/ground-truth+vocoder.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00050051/baselin2-vanilla.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00050051/baseline1-gst.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00050051/our_model.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+</tr>
+</tbody></table>
+<p><em>Demo4: 最后我想说，我去过很多公司。</em></p>
+<p><em>English translation:Finally, I want to say that I've been to a lot of companies.</em></p>
+<table><thead>
+<tr>
+<th style="text-align: center">GT</th>
+<th style="text-align: center">GT mel + MelGAN</th>
+<th style="text-align: center">Baseline (Spk Emb)</th>
+<th style="text-align: center">Baseline (GST)</th>
+<th style="text-align: center">ComedicSpeech</th>
+</tr></thead><tbody>
+<tr>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00050057/ground-truth.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00050057/ground-truth+vocoder.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00050057/baselin2-vanilla.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00050057/baseline1-gst.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00050057/our_model.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+</tr>
+</tbody></table>
+
+<p><span id="1.3" name="1.3"></span></p>
+<h3 id="1.3">1.4 鸟鸟</h3>
+<p><em>Demo1: 谁能想到这其中最煎熬的竟然是中间的那十分钟。</em></p>
+<p><em>English translation:Who would have thought the hardest part would be the 10 minutes in between.</em></p>
+<table><thead>
+<tr>
+<th style="text-align: center">GT</th>
+<th style="text-align: center">GT mel + MelGAN</th>
+<th style="text-align: center">Baseline (Spk Emb)</th>
+<th style="text-align: center">Baseline (GST)</th>
+<th style="text-align: center">ComedicSpeech</th>
+</tr></thead><tbody>
+<tr>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00060019/ground-truth.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00060019/ground-truth+vocoder.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00060019/baselin2-vanilla.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00060019/baseline1-gst.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00060019/our_model.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+</tr>
+</tbody></table>
+<p><em>Demo2: 我来之前还想，我的稿子里有地狱，会不会太沉重了呢。</em></p>
+<p><em>English translation:Before I came here, I was wondering if my script was too heavy with hell in it.</em></p>
+<table><thead>
+<tr>
+<th style="text-align: center">GT</th>
+<th style="text-align: center">GT mel + MelGAN</th>
+<th style="text-align: center">Baseline (Spk Emb)</th>
+<th style="text-align: center">Baseline (GST)</th>
+<th style="text-align: center">ComedicSpeech</th>
+</tr></thead><tbody>
+<tr>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00060033/ground-truth.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00060033/ground-truth+vocoder.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00060033/baselin2-vanilla.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00060033/baseline1-gst.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00060033/our_model.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+</tr>
+</tbody></table>
+<p><em>Demo3: 自打办了健身卡，身体没有变健康，灵魂得到了升华。</em></p>
+<p><em>English translation:Since running a gym membership, the body has not become healthy, the soul has been sublimated.</em></p>
+<table><thead>
+<tr>
+<th style="text-align: center">GT</th>
+<th style="text-align: center">GT mel + MelGAN</th>
+<th style="text-align: center">Baseline (Spk Emb)</th>
+<th style="text-align: center">Baseline (GST)</th>
+<th style="text-align: center">ComedicSpeech</th>
+</tr></thead><tbody>
+<tr>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00060063/ground-truth.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00060063/ground-truth+vocoder.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00060063/baselin2-vanilla.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00060063/baseline1-gst.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00060063/our_model.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+</tr>
+</tbody></table>
+
+<p><span id="audio-studies" name="audio-studies"></span></p>
+<h2 id="ablation-studies">Ablation Studies</h2>
+<img src="images/ComedicSpeech/table2.png" width="35%"/>
+<p><span id="2.1" name="2.1"></span></p>
+<h3 id="2.1">2.1 呼兰</h3>
+<p><em>compare1: 而且他这高考出问题，我看着都心慌，这字儿我都不认识，我也是高材生啊。</em></p>
+<p><em>English translation:And he had a problem with the college entrance examination, I looked at the panic, this word I don't know, I am also a top student.</em></p>
+<table><thead>
+<tr>
+<th style="text-align: center">ComedicSpeech</th>
+<th style="text-align: center">ComedicSpeech - duration CLN</th>
+<th style="text-align: center">ComedicSpeech + pitch and energy CLN</th>
+<th style="text-align: center">ComedicSpeech - spc </th>
+</tr></thead><tbody>
+<tr>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla3_nospc/SSA00010027/our_model.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla1_2con/SSA00010027/abla1-2con.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla2_5con/SSA00010027/abla2-5con.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla3_nospc/SSA00010027/abla3-nospc.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+</tr>
+</tbody></table>
+<p><em>compare2: 而且热搜上面是有标签的，就是那个什么营销号，就是那个一个井字儿对吧。</em></p>
+<p><em>English translation:And there's a hashtag on it, the marketing account, you know, a hash symbol.</em></p>
+<table><thead>
+<tr>
+<th style="text-align: center">ComedicSpeech</th>
+<th style="text-align: center">ComedicSpeech - duration CLN</th>
+<th style="text-align: center">ComedicSpeech + pitch and energy CLN</th>
+<th style="text-align: center">ComedicSpeech - spc </th>
+</tr></thead><tbody>
+<tr>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla3_nospc/SSA00010030/our_model.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla1_2con/SSA00010030/abla1-2con.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla2_5con/SSA00010030/abla2-5con.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla3_nospc/SSA00010030/abla3-nospc.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+</tr>
+</tbody></table>
+<p><em>compare3: 还拉了个群，叫“抄底小队”，后来才知道，那是“自杀小队”。</em></p>
+<p><em>English translation:And formed a group called the "bottom Hunting Squad," which, as it turned out, was the "suicide Squad."</em></p>
+<table><thead>
+<tr>
+<th style="text-align: center">ComedicSpeech</th>
+<th style="text-align: center">ComedicSpeech - duration CLN</th>
+<th style="text-align: center">ComedicSpeech + pitch and energy CLN</th>
+<th style="text-align: center">ComedicSpeech - spc </th>
+</tr></thead><tbody>
+<tr>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla3_nospc/SSA00010047/our_model.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla1_2con/SSA00010047/abla1-2con.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla2_5con/SSA00010047/abla2-5con.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla3_nospc/SSA00010047/abla3-nospc.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+</tr>
+</tbody></table>
+<p><em>compare4: 聊遗憾，我真的觉得遗憾挺好的，就相比你啥都留不下来，你至少还留下了遗憾嘛。</em></p>
+<p><em>English translation:Talking about regret, I really think regret is good, compared to you can not save anything, you at least left regret.</em></p>
+<table><thead>
+<tr>
+<th style="text-align: center">ComedicSpeech</th>
+<th style="text-align: center">ComedicSpeech - duration CLN</th>
+<th style="text-align: center">ComedicSpeech + pitch and energy CLN</th>
+<th style="text-align: center">ComedicSpeech - spc </th>
+</tr></thead><tbody>
+<tr>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla3_nospc/SSA00010109/our_model.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla1_2con/SSA00010109/abla1-2con.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla2_5con/SSA00010109/abla2-5con.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla3_nospc/SSA00010109/abla3-nospc.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+</tr>
+</tbody></table>
+
+<p><span id="2.2" name="2.2"></span></p>
+<h3 id="2.2">2.2 杨笠</h3>
+<p><em>compare1: 然后我就给那个男的打电话，我说首先是这样的，我非常敬重你的人品。</em></p>
+<p><em>English translation:And I called the guy, and I said, first of all, I have a lot of respect for your character.</em></p>
+<table><thead>
+<tr>
+<th style="text-align: center">ComedicSpeech</th>
+<th style="text-align: center">ComedicSpeech - duration CLN</th>
+<th style="text-align: center">ComedicSpeech + pitch and energy CLN</th>
+<th style="text-align: center">ComedicSpeech - spc </th>
+</tr></thead><tbody>
+<tr>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla3_nospc/SSA00040036/our_model.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla1_2con/SSA00040036/abla1-2con.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla2_5con/SSA00040036/abla2-5con.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla3_nospc/SSA00040036/abla3-nospc.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+</tr>
+</tbody></table>
+<p><em>compare2: 不是的，这是一种偏见。我们家不重男轻女，在我们家是这样。</em></p>
+<p><em>English translation:No, it's a form of prejudice. We don't have a preference for boys, not in our family.</em></p>
+<table><thead>
+<tr>
+<th style="text-align: center">ComedicSpeech</th>
+<th style="text-align: center">ComedicSpeech - duration CLN</th>
+<th style="text-align: center">ComedicSpeech + pitch and energy CLN</th>
+<th style="text-align: center">ComedicSpeech - spc </th>
+</tr></thead><tbody>
+<tr>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla3_nospc/SSA00040095/our_model.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla1_2con/SSA00040095/abla1-2con.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla2_5con/SSA00040095/abla2-5con.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla3_nospc/SSA00040095/abla3-nospc.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+</tr>
+</tbody></table>
+<p><em>compare3: 但是没有一个孩子，把同学领回家写作业写着写着说，是不是累了？啊？</em></p>
+<p><em>English translation:But there is no child, taking his classmates home to write homework and say, is it tired? </em></p>
+<table><thead>
+<tr>
+<th style="text-align: center">ComedicSpeech</th>
+<th style="text-align: center">ComedicSpeech - duration CLN</th>
+<th style="text-align: center">ComedicSpeech + pitch and energy CLN</th>
+<th style="text-align: center">ComedicSpeech - spc </th>
+</tr></thead><tbody>
+<tr>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla3_nospc/SSA00040113/our_model.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla1_2con/SSA00040113/abla1-2con.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla2_5con/SSA00040113/abla2-5con.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla3_nospc/SSA00040113/abla3-nospc.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+</tr>
+</tbody></table>
+<p><em>compare4: 我真正开始有一点自信以后，是我开始说脱口秀以后，我觉得我长得挺好的，你知道吧。</em></p>
+<p><em>English translation:When I really started to feel a little more confident, when I started talking talk, I thought I looked good, you know.</em></p>
+<table><thead>
+<tr>
+<th style="text-align: center">ComedicSpeech</th>
+<th style="text-align: center">ComedicSpeech - duration CLN</th>
+<th style="text-align: center">ComedicSpeech + pitch and energy CLN</th>
+<th style="text-align: center">ComedicSpeech - spc </th>
+</tr></thead><tbody>
+<tr>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla3_nospc/SSA00040129/our_model.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla1_2con/SSA00040129/abla1-2con.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla2_5con/SSA00040129/abla2-5con.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla3_nospc/SSA00040129/abla3-nospc.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+</tr>
+</tbody></table>
+		
+<p><span id="2.3" name="2.3"></span></p>
+<h3 id="2.3">2.3 杨波</h3>
+<p><em>compare1: 有一天我睡的正香，我女朋友把我叫醒。</em></p>
+<p><em>English translation:One day when I was fast asleep, my girlfriend woke me up.</em></p>
+<table><thead>
+<tr>
+<th style="text-align: center">ComedicSpeech</th>
+<th style="text-align: center">ComedicSpeech - duration CLN</th>
+<th style="text-align: center">ComedicSpeech + pitch and energy CLN</th>
+<th style="text-align: center">ComedicSpeech - spc </th>
+</tr></thead><tbody>
+<tr>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla3_nospc/SSA00050012/our_model.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla1_2con/SSA00050012/abla1-2con.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla2_5con/SSA00050012/abla2-5con.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla3_nospc/SSA00050012/abla3-nospc.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+</tr>
+</tbody></table>
+<p><em>compare2: 后来，老板把我开了，可能他觉得，工作压力太大了。</em></p>
+<p><em>English translation:Later, my boss fired me, maybe he felt the pressure of work was too much.</em></p>
+<table><thead>
+<tr>
+<th style="text-align: center">ComedicSpeech</th>
+<th style="text-align: center">ComedicSpeech - duration CLN</th>
+<th style="text-align: center">ComedicSpeech + pitch and energy CLN</th>
+<th style="text-align: center">ComedicSpeech - spc </th>
+</tr></thead><tbody>
+<tr>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla3_nospc/SSA00050026/our_model.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla1_2con/SSA00050026/abla1-2con.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla2_5con/SSA00050026/abla2-5con.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla3_nospc/SSA00050026/abla3-nospc.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+</tr>
+</tbody></table>
+<p><em>compare3: 看见了吗，你们加一起也斗不过我。</em></p>
+<p><em>English translation:See? You can't beat me together.</em></p>
+<table><thead>
+<tr>
+<th style="text-align: center">ComedicSpeech</th>
+<th style="text-align: center">ComedicSpeech - duration CLN</th>
+<th style="text-align: center">ComedicSpeech + pitch and energy CLN</th>
+<th style="text-align: center">ComedicSpeech - spc </th>
+</tr></thead><tbody>
+<tr>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla3_nospc/SSA00050051/our_model.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla1_2con/SSA00050051/abla1-2con.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla2_5con/SSA00050051/abla2-5con.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla3_nospc/SSA00050051/abla3-nospc.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+</tr>
+</tbody></table>
+<p><em>compare4: 最后我想说，我去过很多公司。</em></p>
+<p><em>English translation:Finally, I want to say that I've been to a lot of companies.</em></p>
+<table><thead>
+<tr>
+<th style="text-align: center">ComedicSpeech</th>
+<th style="text-align: center">ComedicSpeech - duration CLN</th>
+<th style="text-align: center">ComedicSpeech + pitch and energy CLN</th>
+<th style="text-align: center">ComedicSpeech - spc </th>
+</tr></thead><tbody>
+<tr>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla3_nospc/SSA00050057/our_model.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla1_2con/SSA00050057/abla1-2con.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla2_5con/SSA00050057/abla2-5con.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla3_nospc/SSA00050057/abla3-nospc.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+</tr>
+</tbody></table>
+
+<p><span id="2.4" name="2.4"></span></p>
+<h3 id="2.4">2.4 鸟鸟</h3>
+<p><em>compare1: 谁能想到这其中最煎熬的竟然是中间的那十分钟。</em></p>
+<p><em>English translation:Who would have thought the hardest part would be the 10 minutes in between.</em></p>
+<table><thead>
+<tr>
+<th style="text-align: center">ComedicSpeech</th>
+<th style="text-align: center">ComedicSpeech - duration CLN</th>
+<th style="text-align: center">ComedicSpeech + pitch and energy CLN</th>
+<th style="text-align: center">ComedicSpeech - spc </th>
+</tr></thead><tbody>
+<tr>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla3_nospc/SSA00060019/our_model.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla1_2con/SSA00060019/abla1-2con.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla2_5con/SSA00060019/abla2-5con.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla3_nospc/SSA00060019/abla3-nospc.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+</tr>
+</tbody></table>
+<p><em>compare2: 我来之前还想，我的稿子里有地狱，会不会太沉重了呢。</em></p>
+<p><em>English translation:Before I came here, I was wondering if my script was too heavy with hell in it.</em></p>
+<table><thead>
+<tr>
+<th style="text-align: center">ComedicSpeech</th>
+<th style="text-align: center">ComedicSpeech - duration CLN</th>
+<th style="text-align: center">ComedicSpeech + pitch and energy CLN</th>
+<th style="text-align: center">ComedicSpeech - spc </th>
+</tr></thead><tbody>
+<tr>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla3_nospc/SSA00060033/our_model.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla1_2con/SSA00060033/abla1-2con.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla2_5con/SSA00060033/abla2-5con.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla3_nospc/SSA00060033/abla3-nospc.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+</tr>
+</tbody></table>
+<p><em>compare3: 自打办了健身卡，身体没有变健康，灵魂得到了升华。</em></p>
+<p><em>English translation:Since running a gym membership, the body has not become healthy, the soul has been sublimated.</em></p>
+<table><thead>
+<tr>
+<th style="text-align: center">ComedicSpeech</th>
+<th style="text-align: center">ComedicSpeech - duration CLN</th>
+<th style="text-align: center">ComedicSpeech + pitch and energy CLN</th>
+<th style="text-align: center">ComedicSpeech - spc </th>
+</tr></thead><tbody>
+<tr>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla3_nospc/SSA00060063/our_model.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla1_2con/SSA00060063/abla1-2con.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla2_5con/SSA00060063/abla2-5con.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/abla3_nospc/SSA00060063/abla3-nospc.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+</tr>
+</tbody></table>
+				
+<p><span id="case-studies" name="case-studies"></span></p>
+<h2 id="audio-samples">Case Study——The diversity of styles in ComedicSpeech to the same text (contain personal filler)</h2>
+<img src="images/ComedicSpeech/case_study.png" width="50%"/>			
+<p><em>使用带个性填充物(杨笠的"你知道吧")的文本: </em></p>
+				<p><em>我真正开始有一点自信以后，是我开始说脱口秀以后，我觉得我长得挺好的，你知道吧。</em></p>
+<p><em>English translation:Using text with personality filler (Yang Li's "You know what ") : </em></p>
+			<p><em>English translation:When I really started to feel a little more confident, when I started talking talk, I thought I looked good, you know.</em></p>
+<table><thead>
+<tr>
+<th style="text-align: center">GT</th>
+<th style="text-align: center">Baseline (Spk Emb)—杨笠口吻</th>
+</tr></thead><tbody>
+<tr>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00040129/ground-truth.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/baseline_demo/SSA00040129/baselin2-vanilla.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+</tr>
+</tbody></table>
+<table><thead>
+<tr>
+<th style="text-align: center">ComedicSpeech-Lan Hu's tone</th>
+<th style="text-align: center">ComedicSpeech-Li Yang's tone</th>
+<th style="text-align: center">ComedicSpeech-Bo Yang's tone</th>
+<th style="text-align: center">ComedicSpeech-Niao Niao's tone</th>
+</tr></thead><tbody>
+<tr>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/case_study/呼兰-SSA00040129.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/case_study/杨笠-SSA00040129.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/case_study/杨波-SSA00040129.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+<td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/case_study/鸟鸟-SSA00040129.wav" autoplay/>Your browser does not support the audio element.</audio></td>
+</tr></tbody></table>
+			</section>
+		</article>
+	</main>
+
+
+</div>
+
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-139981676-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+<script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+         HTML: ["input/TeX","output/HTML-CSS"],
+         TeX: {
+                Macros: {
+                         bm: ["\\boldsymbol{#1}", 1],
+                         argmax: ["\\mathop{\\rm arg\\,max}\\limits"],
+                         argmin: ["\\mathop{\\rm arg\\,min}\\limits"]},
+                extensions: ["AMSmath.js","AMSsymbols.js"],
+                equationNumbers: { autoNumber: "AMS" } },
+         extensions: ["tex2jax.js"],
+         jax: ["input/TeX","output/HTML-CSS"],
+         tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                    processEscapes: true },
+         "HTML-CSS": { availableFonts: ["TeX"],
+                       linebreaks: { automatic: true } }
+     });
+ </script>
+
+ <script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+       tex2jax: {
+         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+       }
+     });
+ </script>
+
+ <script type="text/javascript" async
+   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML">
+ </script>
+
+</body>
+</html>
