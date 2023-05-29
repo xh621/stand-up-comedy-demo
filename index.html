@@ -35,8 +35,10 @@
 </ul>
 <p><small>* Equally contributed authors.</small></p>			
 <p><small># Corresponding authors.</small></p>
+				
 <h2 id="abstract1">Abstract</h2>
 <p>Text to Speech (TTS) models can generate natural and high-quality speech, but it is not expressive enough when synthesizing speech with dramatic expressiveness, such as stand-up comedies. Considering comedians have diverse personal speech styles, including personal prosody, rhythm, and fillers, it requires real-world datasets and strong speech style modeling capabilities, which brings challenges. In this paper, we construct a new dataset and develop ComedicSpeech, a TTS system tailored for the stand-up comedy synthesis in low-resource scenarios. First, we extract prosody representation by the prosody encoder and condition it to the TTS model in a flexible way. Second, we enhance the personal rhythm modeling by a conditional duration predictor. Third, we model the personal fillers by introducing comedian-related special tokens. Experiments show that ComedicSpeech achieves better expressiveness than baselines with only ten-minute training data for each comedian.</p>
+
 <h2 id="abstract">Contents</h2>
 <b><a href="#audio-samples">Baseline Comparison and Audio Samples Synthesized by ComedicSpeech</a></b><br>
 <a href="#1.1">1.1 Lan Hu(Comedian A)</a><br>
@@ -59,6 +61,7 @@
 <p><span id="1.1" name="1.1"></span></p>
 <h3 id="1.1">1.1 呼兰</h3>
 <p><em>Demo1: 而且他这高考出问题，我看着都心慌，这字儿我都不认识，我也是高材生啊</em></p>
+<p><em>English translation:And he had a problem with the college entrance examination, I looked at the panic, this word I don't know, I am also a top student.</em></p>
 <table><thead>
 <tr>
 <th style="text-align: center">GT</th>
@@ -76,6 +79,7 @@
 </tr>
 </tbody></table>
 <p><em>Demo2: 而且热搜上面是有标签的，就是那个什么营销号，就是那个一个井字儿对吧。</em></p>
+<p><em>English translation:And there's a hashtag on it, the marketing account, you know, a hash symbol.</em></p>
 <table><thead>
 <tr>
 <th style="text-align: center">GT</th>
@@ -93,6 +97,7 @@
 </tr>
 </tbody></table>
 <p><em>Demo3: 还拉了个群，叫“抄底小队”，后来才知道，那是“自杀小队”。</em></p>
+<p><em>English translation:And formed a group called the "bottom Hunting Squad," which, as it turned out, was the "suicide Squad."</em></p>
 <table><thead>
 <tr>
 <th style="text-align: center">GT</th>
@@ -110,6 +115,7 @@
 </tr>
 </tbody></table>
 <p><em>Demo4: 聊遗憾，我真的觉得遗憾挺好的，就相比你啥都留不下来，你至少还留下了遗憾嘛。</em></p>
+<p><em>English translation:Talking about regret, I really think regret is good, compared to you can not save anything, you at least left regret.</em></p>
 <table><thead>
 <tr>
 <th style="text-align: center">GT</th>
@@ -130,6 +136,7 @@
 <p><span id="1.2" name="1.2"></span></p>
 <h3 id="1.2">1.2 杨笠</h3>
 <p><em>Demo1: 然后我就给那个男的打电话，我说首先是这样的，我非常敬重你的人品。</em></p>
+<p><em>English translation:And I called the guy, and I said, first of all, I have a lot of respect for your character.</em></p>
 <table><thead>
 <tr>
 <th style="text-align: center">GT</th>
@@ -147,6 +154,7 @@
 </tr>
 </tbody></table>
 <p><em>Demo2: 不是的，这是一种偏见。我们家不重男轻女，在我们家是这样。</em></p>
+<p><em>English translation:No, it's a form of prejudice. We don't have a preference for boys, not in our family.</em></p>
 <table><thead>
 <tr>
 <th style="text-align: center">GT</th>
@@ -164,6 +172,7 @@
 </tr>
 </tbody></table>
 <p><em>Demo3: 但是没有一个孩子，把同学领回家写作业写着写着说，是不是累了？啊？</em></p>
+<p><em>English translation:But there is no child, taking his classmates home to write homework and say, is it tired? </em></p>
 <table><thead>
 <tr>
 <th style="text-align: center">GT</th>
@@ -181,6 +190,7 @@
 </tr>
 </tbody></table>
 <p><em>Demo4: 我真正开始有一点自信以后，是我开始说脱口秀以后，我觉得我长得挺好的，你知道吧。</em></p>
+<p><em>English translation:When I really started to feel a little more confident, when I started talking talk, I thought I looked good, you know.</em></p>
 <table><thead>
 <tr>
 <th style="text-align: center">GT</th>
@@ -201,6 +211,7 @@
 <p><span id="1.3" name="1.3"></span></p>
 <h3 id="1.3">1.3 杨波</h3>
 <p><em>Demo1: 有一天我睡的正香，我女朋友把我叫醒。</em></p>
+<p><em>English translation:One day when I was fast asleep, my girlfriend woke me up.</em></p>
 <table><thead>
 <tr>
 <th style="text-align: center">GT</th>
@@ -218,6 +229,7 @@
 </tr>
 </tbody></table>
 <p><em>Demo2: 后来，老板把我开了，可能他觉得，工作压力太大了。</em></p>
+<p><em>English translation:Later, my boss fired me, maybe he felt the pressure of work was too much.</em></p>
 <table><thead>
 <tr>
 <th style="text-align: center">GT</th>
@@ -235,6 +247,7 @@
 </tr>
 </tbody></table>
 <p><em>Demo3: 看见了吗，你们加一起也斗不过我。</em></p>
+<p><em>English translation:See? You can't beat me together.</em></p>
 <table><thead>
 <tr>
 <th style="text-align: center">GT</th>
@@ -252,6 +265,7 @@
 </tr>
 </tbody></table>
 <p><em>Demo4: 最后我想说，我去过很多公司。</em></p>
+<p><em>English translation:Finally, I want to say that I've been to a lot of companies.</em></p>
 <table><thead>
 <tr>
 <th style="text-align: center">GT</th>
@@ -272,6 +286,7 @@
 <p><span id="1.3" name="1.3"></span></p>
 <h3 id="1.3">1.4 鸟鸟</h3>
 <p><em>Demo1: 谁能想到这其中最煎熬的竟然是中间的那十分钟。</em></p>
+<p><em>English translation:Who would have thought the hardest part would be the 10 minutes in between.</em></p>
 <table><thead>
 <tr>
 <th style="text-align: center">GT</th>
@@ -289,6 +304,7 @@
 </tr>
 </tbody></table>
 <p><em>Demo2: 我来之前还想，我的稿子里有地狱，会不会太沉重了呢。</em></p>
+<p><em>English translation:Before I came here, I was wondering if my script was too heavy with hell in it.</em></p>
 <table><thead>
 <tr>
 <th style="text-align: center">GT</th>
@@ -306,6 +322,7 @@
 </tr>
 </tbody></table>
 <p><em>Demo3: 自打办了健身卡，身体没有变健康，灵魂得到了升华。</em></p>
+<p><em>English translation:Since running a gym membership, the body has not become healthy, the soul has been sublimated.</em></p>
 <table><thead>
 <tr>
 <th style="text-align: center">GT</th>
@@ -329,6 +346,7 @@
 <p><span id="2.1" name="2.1"></span></p>
 <h3 id="2.1">2.1 呼兰</h3>
 <p><em>compare1: 而且他这高考出问题，我看着都心慌，这字儿我都不认识，我也是高材生啊。</em></p>
+<p><em>English translation:And he had a problem with the college entrance examination, I looked at the panic, this word I don't know, I am also a top student.</em></p>
 <table><thead>
 <tr>
 <th style="text-align: center">ComedicSpeech</th>
@@ -344,6 +362,7 @@
 </tr>
 </tbody></table>
 <p><em>compare2: 而且热搜上面是有标签的，就是那个什么营销号，就是那个一个井字儿对吧。</em></p>
+<p><em>English translation:And there's a hashtag on it, the marketing account, you know, a hash symbol.</em></p>
 <table><thead>
 <tr>
 <th style="text-align: center">ComedicSpeech</th>
@@ -359,6 +378,7 @@
 </tr>
 </tbody></table>
 <p><em>compare3: 还拉了个群，叫“抄底小队”，后来才知道，那是“自杀小队”。</em></p>
+<p><em>English translation:And formed a group called the "bottom Hunting Squad," which, as it turned out, was the "suicide Squad."</em></p>
 <table><thead>
 <tr>
 <th style="text-align: center">ComedicSpeech</th>
@@ -374,6 +394,7 @@
 </tr>
 </tbody></table>
 <p><em>compare4: 聊遗憾，我真的觉得遗憾挺好的，就相比你啥都留不下来，你至少还留下了遗憾嘛。</em></p>
+<p><em>English translation:Talking about regret, I really think regret is good, compared to you can not save anything, you at least left regret.</em></p>
 <table><thead>
 <tr>
 <th style="text-align: center">ComedicSpeech</th>
@@ -392,6 +413,7 @@
 <p><span id="2.2" name="2.2"></span></p>
 <h3 id="2.2">2.2 杨笠</h3>
 <p><em>compare1: 然后我就给那个男的打电话，我说首先是这样的，我非常敬重你的人品。</em></p>
+<p><em>English translation:And I called the guy, and I said, first of all, I have a lot of respect for your character.</em></p>
 <table><thead>
 <tr>
 <th style="text-align: center">ComedicSpeech</th>
@@ -407,6 +429,7 @@
 </tr>
 </tbody></table>
 <p><em>compare2: 不是的，这是一种偏见。我们家不重男轻女，在我们家是这样。</em></p>
+<p><em>English translation:No, it's a form of prejudice. We don't have a preference for boys, not in our family.</em></p>
 <table><thead>
 <tr>
 <th style="text-align: center">ComedicSpeech</th>
@@ -422,6 +445,7 @@
 </tr>
 </tbody></table>
 <p><em>compare3: 但是没有一个孩子，把同学领回家写作业写着写着说，是不是累了？啊？</em></p>
+<p><em>English translation:But there is no child, taking his classmates home to write homework and say, is it tired? </em></p>
 <table><thead>
 <tr>
 <th style="text-align: center">ComedicSpeech</th>
@@ -437,6 +461,7 @@
 </tr>
 </tbody></table>
 <p><em>compare4: 我真正开始有一点自信以后，是我开始说脱口秀以后，我觉得我长得挺好的，你知道吧。</em></p>
+<p><em>English translation:When I really started to feel a little more confident, when I started talking talk, I thought I looked good, you know.</em></p>
 <table><thead>
 <tr>
 <th style="text-align: center">ComedicSpeech</th>
@@ -455,6 +480,7 @@
 <p><span id="2.3" name="2.3"></span></p>
 <h3 id="2.3">2.3 杨波</h3>
 <p><em>compare1: 有一天我睡的正香，我女朋友把我叫醒。</em></p>
+<p><em>English translation:One day when I was fast asleep, my girlfriend woke me up.</em></p>
 <table><thead>
 <tr>
 <th style="text-align: center">ComedicSpeech</th>
@@ -470,6 +496,7 @@
 </tr>
 </tbody></table>
 <p><em>compare2: 后来，老板把我开了，可能他觉得，工作压力太大了。</em></p>
+<p><em>English translation:Later, my boss fired me, maybe he felt the pressure of work was too much.</em></p>
 <table><thead>
 <tr>
 <th style="text-align: center">ComedicSpeech</th>
@@ -485,6 +512,7 @@
 </tr>
 </tbody></table>
 <p><em>compare3: 看见了吗，你们加一起也斗不过我。</em></p>
+<p><em>English translation:See? You can't beat me together.</em></p>
 <table><thead>
 <tr>
 <th style="text-align: center">ComedicSpeech</th>
@@ -500,6 +528,7 @@
 </tr>
 </tbody></table>
 <p><em>compare4: 最后我想说，我去过很多公司。</em></p>
+<p><em>English translation:Finally, I want to say that I've been to a lot of companies.</em></p>
 <table><thead>
 <tr>
 <th style="text-align: center">ComedicSpeech</th>
@@ -518,6 +547,7 @@
 <p><span id="2.4" name="2.4"></span></p>
 <h3 id="2.4">2.4 鸟鸟</h3>
 <p><em>compare1: 谁能想到这其中最煎熬的竟然是中间的那十分钟。</em></p>
+<p><em>English translation:Who would have thought the hardest part would be the 10 minutes in between.</em></p>
 <table><thead>
 <tr>
 <th style="text-align: center">ComedicSpeech</th>
@@ -533,6 +563,7 @@
 </tr>
 </tbody></table>
 <p><em>compare2: 我来之前还想，我的稿子里有地狱，会不会太沉重了呢。</em></p>
+<p><em>English translation:Before I came here, I was wondering if my script was too heavy with hell in it.</em></p>
 <table><thead>
 <tr>
 <th style="text-align: center">ComedicSpeech</th>
@@ -548,6 +579,7 @@
 </tr>
 </tbody></table>
 <p><em>compare3: 自打办了健身卡，身体没有变健康，灵魂得到了升华。</em></p>
+<p><em>English translation:Since running a gym membership, the body has not become healthy, the soul has been sublimated.</em></p>
 <table><thead>
 <tr>
 <th style="text-align: center">ComedicSpeech</th>
@@ -568,6 +600,8 @@
 <img src="images/ComedicSpeech/case_study.png" width="50%"/>			
 <p><em>使用带个性填充物(杨笠的"你知道吧")的文本: </em></p>
 				<p><em>我真正开始有一点自信以后，是我开始说脱口秀以后，我觉得我长得挺好的，你知道吧。</em></p>
+<p><em>English translation:Using text with personality filler (Yang Li's "You know what ") : </em></p>
+			<p><em>English translation:When I really started to feel a little more confident, when I started talking talk, I thought I looked good, you know.</em></p>
 <table><thead>
 <tr>
 <th style="text-align: center">GT</th>
@@ -580,10 +614,10 @@
 </tbody></table>
 <table><thead>
 <tr>
-<th style="text-align: center">ComedicSpeech-呼兰口吻</th>
-<th style="text-align: center">ComedicSpeech-杨笠口吻</th>
-<th style="text-align: center">ComedicSpeech-杨波口吻</th>
-<th style="text-align: center">ComedicSpeech-鸟鸟口吻</th>
+<th style="text-align: center">ComedicSpeech-Lan Hu's tone</th>
+<th style="text-align: center">ComedicSpeech-Li Yang's tone</th>
+<th style="text-align: center">ComedicSpeech-Bo Yang's tone</th>
+<th style="text-align: center">ComedicSpeech-Niao Niao's tone</th>
 </tr></thead><tbody>
 <tr>
 <td style="text-align: center"><audio controls="controls" ><source src="audio/ComedicSpeech/case_study/呼兰-SSA00040129.wav" autoplay/>Your browser does not support the audio element.</audio></td>
